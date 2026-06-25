@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Despre noi — Pizzeria Toskana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+<style>
+/* ── LAYOUT ── */
+.page-wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 120px 48px 80px;
+}
+.page-header {
+  text-align: center;
+  margin-bottom: 52px;
+}
+.page-header h2 {
+  font-family: var(--font-d);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 14px;
+  letter-spacing: -.02em;
+}
+.page-header h2 span { color: var(--gold); }
+.page-header p { color: var(--muted); max-width: 58ch; margin: 0 auto; line-height: 1.78; font-size: 1.05rem; }
+.gold-line {
+  width: 52px; height: 2px; margin: 16px auto 20px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ── HERO BLOCK ── */
+.despre-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  padding: 56px;
+  margin-bottom: 24px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 80% 30%, rgba(204,59,30,.09), transparent 40%),
+    radial-gradient(circle at 10% 80%, rgba(216,165,62,.06), transparent 40%),
+    rgba(255,255,255,.025);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.despre-hero::before {
+  content: '"';
+  position: absolute;
+  top: -30px; left: 32px;
+  font-family: var(--font-d);
+  font-size: 18rem;
+  color: rgba(216,165,62,.045);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.despre-hero-left h2 {
+  font-family: var(--font-d);
+  font-size: clamp(1.9rem, 3vw, 3rem);
+  font-weight: 900;
+  line-height: 1.06;
+  margin-bottom: 20px;
+  letter-spacing: -.02em;
+}
+.despre-hero-left h2 em { color: var(--gold); font-style: italic; }
+.despre-motto {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.82;
+  font-style: italic;
+  padding-left: 18px;
+  border-left: 3px solid var(--red);
+  margin-bottom: 28px;
+}
+.despre-hero-right { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.kpi-box {
+  padding: 24px 20px; border-radius: 20px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--lineg);
+  text-align: center; transition: border-color .22s, transform .22s;
+}
+.kpi-box:hover { border-color: rgba(216,165,62,.3); transform: translateY(-3px); }
+.kpi-n { display: block; font-family: var(--font-d); font-size: 2.3rem; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 8px; }
+.kpi-l { font-size: 11.5px; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; }
+
+/* ── SECTION DIVIDER ── */
+.sec-div { display: flex; align-items: center; gap: 16px; margin: 52px 0 28px; }
+.sec-div span { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+.sec-div::before, .sec-div::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--lineg), transparent); }
+
+/* ── VALORI GRID ── */
+.valori-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.val-card {
+  padding: 30px 26px; border-radius: 22px;
+  background: rgba(255,255,255,.025); border: 1px solid var(--line);
+  transition: border-color .22s, transform .22s;
+  position: relative; overflow: hidden;
+}
+.val-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: linear-gradient(90deg, transparent, var(--red), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.val-card:hover { border-color: rgba(204,59,30,.22); transform: translateY(-4px); }
+.val-card:hover::after { opacity: 1; }
+.val-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
+.val-card h4 { font-family: var(--font-d); font-size: 1.28rem; margin-bottom: 10px; font-weight: 700; }
+.val-card p { color: var(--muted); font-size: .95rem; line-height: 1.8; }
+
+/* ── ORAR ── */
+.orar-section { display: grid; grid-template-columns: 1fr 1.6fr; gap: 32px; align-items: start; }
+.orar-intro h3 { font-family: var(--font-d); font-size: 2rem; font-weight: 900; line-height: 1.05; margin-bottom: 14px; }
+.orar-intro h3 span { color: var(--gold); }
+.orar-intro p { color: var(--muted); line-height: 1.8; font-size: .97rem; margin-bottom: 24px; }
+
+.orar-table { background: rgba(255,255,255,.025); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
+.orar-header {
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #cc3b1e 0%, #a82d14 100%);
+  font-weight: 700; font-size: 13.5px; letter-spacing: .06em; text-transform: uppercase;
+  color: #fff; display: flex; align-items: center; gap: 10px;
+}
+.orar-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px; border-bottom: 1px solid var(--line); transition: background .18s;
+}
+.orar-row:last-child { border-bottom: none; }
+.orar-row:hover { background: rgba(255,255,255,.03); }
+.orar-row.today { background: rgba(216,165,62,.06); padding-left: 20px; border-left: 4px solid var(--gold); }
+.orar-zi { font-weight: 600; font-size: .97rem; color: var(--text); min-width: 100px; display: flex; align-items: center; gap: 8px; }
+.orar-row.today .orar-zi { color: var(--gold); }
+.orar-interval { font-size: .95rem; color: var(--muted); display: flex; align-items: center; gap: 9px; }
+.orar-dot { width: 7px; height: 7px; border-radius: 50%; background: #3aaa5c; flex-shrink: 0; }
+.orar-row.duminica .orar-dot { background: var(--gold); }
+.today-badge { padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(216,165,62,.15); color: var(--gold); border: 1px solid rgba(216,165,62,.25); }
+
+/* ── CTA ── */
+.despre-cta {
+  margin-top: 52px; padding: 60px 56px; border-radius: 28px; text-align: center;
+  background: radial-gradient(circle at 50% -10%, rgba(204,59,30,.14), transparent 52%), rgba(255,255,255,.02);
+  border: 1px solid rgba(204,59,30,.16);
+  position: relative; overflow: hidden;
+}
+.despre-cta::before {
+  content: 'TOSKANA'; position: absolute; bottom: -20px; right: -10px;
+  font-family: var(--font-d); font-size: 8rem; font-weight: 900;
+  color: rgba(255,255,255,.025); letter-spacing: -.02em; pointer-events: none;
+}
+.despre-cta h3 { font-family: var(--font-d); font-size: 2.6rem; font-weight: 900; margin-bottom: 14px; line-height: 1.05; }
+.despre-cta h3 em { color: var(--gold); font-style: italic; }
+.despre-cta p { color: var(--muted); max-width: 56ch; margin: 0 auto 28px; line-height: 1.8; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 980px) {
+  .page-wrap { padding: 100px 22px 60px; }
+  .despre-hero { grid-template-columns: 1fr; gap: 32px; padding: 28px; }
+  .despre-hero::before { display: none; }
+  .valori-wrap { grid-template-columns: 1fr 1fr; }
+  .orar-section { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .valori-wrap { grid-template-columns: 1fr; }
+  .despre-cta { padding: 36px 22px; }
+  .despre-cta::before { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Toskana">
+        <circle cx="60" cy="60" r="56" fill="white" stroke="#cc3b1e" stroke-width="7"/>
+        <circle cx="60" cy="60" r="42" fill="none" stroke="#cc3b1e" stroke-width="2" opacity=".2"/>
+        <defs>
+          <path id="bTA" d="M 20 60 A 40 40 0 0 1 100 60"/>
+          <path id="bBA" d="M 20 60 A 40 40 0 0 0 100 60"/>
+        </defs>
+        <text x="60" y="79" text-anchor="middle" font-size="66" font-weight="900" font-family="Arial Black,Arial" fill="#cc3b1e">T</text>
+        <text font-size="9.5" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.4" fill="#cc3b1e">
+          <textPath href="#bTA" startOffset="10%">PIZZERIE TOSKANA</textPath>
+        </text>
+        <text font-size="8.8" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.1" fill="#cc3b1e">
+          <textPath href="#bBA" startOffset="25%">RESTAURANT</textPath>
+        </text>
+      </svg>
+      <div class="brand-text">
+        <strong>Pizzeria Toskana</strong>
+        <small>Dal 2011 · Cluj-Napoca</small>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Acasă</a>
+      <a href="meniu.html">Meniu</a>
+      <a href="locatii.html">Locații</a>
+      <a href="despre.html" class="active">Despre noi</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a href="tel:+40264000000" class="nav-cta">Sună acum</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header" id="ph">
+    <div class="eyebrow">Povestea noastră</div>
+    <div class="gold-line"></div>
+    <h2>Bine ai venit la <span>Toskana</span></h2>
+    <p>Locul unde te întâmpină mereu un zâmbet prietenos, o atmosferă relaxantă și un meniu fără granițe geografice, cu porții generoase.</p>
+  </div>
+
+  <!-- MOTTO + KPI -->
+  <div class="despre-hero" id="d-hero">
+    <div class="despre-hero-left">
+      <h2>Nu am inventat pizza —<br>am <em>perfecționat-o.</em></h2>
+      <p class="despre-motto">
+        Din 2011, facem același lucru în fiecare zi: rețete bune, ingrediente reale și muncă serioasă.
+      </p>
+      <p style="color:var(--muted);line-height:1.82;font-size:.97rem">
+        La Toskana nu există compromisuri. Fiecare produs este preparat pe loc, imediat după primirea comenzii, cu ingrediente atent selectate înainte de a intra în producție. Nu stocăm, nu refolosim, nu grăbim procesul.
+      </p>
+    </div>
+    <div class="despre-hero-right">
+      <div class="kpi-box"><span class="kpi-n">2011</span><span class="kpi-l">Înființat</span></div>
+      <div class="kpi-box"><span class="kpi-n">3</span><span class="kpi-l">Locații Cluj</span></div>
+      <div class="kpi-box"><span class="kpi-n">4.0★</span><span class="kpi-l">Rating Google(8k reviews)</span></div>
+      <div class="kpi-box"><span class="kpi-n">Zilnic</span><span class="kpi-l">Ingrediente proaspete</span></div>
+    </div>
+  </div>

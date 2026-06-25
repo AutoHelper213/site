@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comandă online — Pizzeria Toskana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand">
+        <svg class="brand-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Toskana">
+          <circle cx="60" cy="60" r="56" fill="white" stroke="#cc3b1e" stroke-width="7"/>
+          <circle cx="60" cy="60" r="42" fill="none" stroke="#cc3b1e" stroke-width="2" opacity=".2"/>
+          <defs>
+            <path id="bTA" d="M 20 60 A 40 40 0 0 1 100 60"/>
+            <path id="bBA" d="M 20 60 A 40 40 0 0 0 100 60"/>
+          </defs>
+          <text x="60" y="79" text-anchor="middle" font-size="66" font-weight="900" font-family="Arial Black,Arial" fill="#cc3b1e">T</text>
+          <text font-size="9.5" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.4" fill="#cc3b1e">
+            <textPath href="#bTA" startOffset="10%">PIZZERIE TOSKANA</textPath>
+          </text>
+          <text font-size="8.8" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.1" fill="#cc3b1e">
+            <textPath href="#bBA" startOffset="25%">RESTAURANT</textPath>
+          </text>
+        </svg>
+        <div class="brand-text">
+          <strong>Pizzeria Toskana</strong>
+          <small>Dal 1994 · Cluj-Napoca</small>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Acasă</a>
+        <a href="meniu.html">Meniu</a>
+        <a href="locatii.html">Locații</a>
+        <a href="despre.html">Despre noi</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <a href="tel:+40264000000" class="nav-cta">Sună acum</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="page-header">
+      <div class="eyebrow">Comandă online</div>
+      <div class="gold-line"></div>
+      <h2>Alege cum vrei să <span>comanzi</span></h2>
+      <p>Telefon, email sau ridicare directă din locație — alege varianta care ți se potrivește.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="ord-card">
+        <h3>📞 Comandă telefonic</h3>
+        <p>Cea mai rapidă metodă. Suni, spui ce vrei, și pizza e în drum spre tine în 30 de minute.</p>
+        <a class="link-bold" href="tel:+40264000000">Sună acum →</a>
+      </div>
+
+      <div class="ord-card">
+        <h3>📍 Ridicare din locație</h3>
+        <p>Plasezi comanda telefonic și ridici personal din locația cea mai apropiată de tine.</p>
+        <a class="link-bold" href="locatii.html">Vezi locațiile →</a>
+      </div>
+
+      <div class="ord-card">
+        <h3>✉️ Comandă prin email</h3>
+        <p>Trimite-ne comanda pe email cu numele tău, adresa și produsele dorite din meniu.</p>
+        <a class="link-bold" href="mailto:comenzi@toskana.ro">comenzi@toskana.ro →</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Pizzeria Toskana Cluj-Napoca</p>
+    <div class="footer-links">
+      <a href="index.html">Acasă</a>
+      <a href="meniu.html">Meniu</a>
+      <a href="locatii.html">Locații</a>
+      <a href="despre.html">Despre noi</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    gsap.from('.page-header > *', { y: 18, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power3.out', delay: 0.15 });
+    gsap.from('.ord-card', { y: 24, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out', delay: 0.3 });
+  </script>
+</body>
+</html>

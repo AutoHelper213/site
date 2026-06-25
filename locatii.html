@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Locații — Pizzeria Toskana Cluj-Napoca</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+<style>
+.page-wrap { max-width:1240px; margin:0 auto; padding:120px 48px 80px; }
+.page-header { text-align:center; margin-bottom:56px; }
+.page-header h2 { font-family:var(--font-d); font-size:clamp(2rem,4vw,3.8rem); font-weight:900; line-height:1.05; margin-bottom:14px; letter-spacing:-.02em; }
+.page-header h2 span { color:var(--gold); }
+.page-header p { color:var(--muted); max-width:54ch; margin:0 auto; line-height:1.78; font-size:1.05rem; }
+.gold-line { width:52px; height:2px; margin:16px auto 20px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+
+/* ── GRID 3 COLOANE ── */
+.locatii-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:48px; }
+
+.loc-card {
+  display:flex; flex-direction:column;
+  border-radius:26px; background:rgba(255,255,255,.025);
+  border:1px solid var(--line); overflow:hidden;
+  transition:border-color .25s, transform .25s, box-shadow .25s;
+}
+.loc-card:hover { border-color:rgba(216,165,62,.3); transform:translateY(-5px); box-shadow:0 20px 48px rgba(0,0,0,.3); }
+
+.loc-card-header {
+  padding: 26px 28px 22px;
+  background: linear-gradient(135deg, rgba(204,59,30,.22) 0%, rgba(216,165,62,.12) 100%);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  min-height: 160px;          /* fix aliniere */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;  /* icon sus, text jos — mereu aliniat */
+}
+.loc-num { position:absolute; top:18px; right:22px; font-family:var(--font-d); font-size:3.5rem; font-weight:900; color:rgba(216,165,62,.1); line-height:1; user-select:none; }
+.loc-icon { font-size:2rem; margin-bottom:12px; display:block; }
+.loc-card-header h3 { font-family:var(--font-d); font-size:1.5rem; font-weight:900; line-height:1.1; margin-bottom:6px; }
+.loc-card-header .loc-subtitle {
+  white-space: nowrap;      /* nu permite niciodata wrap */
+  overflow: hidden;
+  text-overflow: ellipsis;  /* pune ... daca e prea lung */
+  max-width: 100%;
+  display: block;
+}
+
+.loc-card-body {
+  padding: 22px 28px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Fiecare sectiune ocupa spatiu egal */
+  justify-content: flex-start;
+}
+
+/* Adresa */
+.loc-adresa {
+  min-height: 80px;
+  align-items: flex-start;
+}
+.loc-adresa-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+.loc-adresa-text { display:flex; flex-direction:column; gap:2px; }
+.loc-adresa-text strong { font-size:.97rem; font-weight:600; color:var(--text); }
+.loc-adresa-text span { font-size:.88rem; color:var(--muted); }
+
+/* Telefon */
+.loc-telefon-wrap { min-height: 90px; }
+.loc-telefon-label { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); margin-bottom:8px; display:block; }
+.loc-telefon-btn {
+  display:inline-flex; align-items:center; gap:9px;
+  padding:10px 16px; border-radius:12px;
+  background:rgba(255,255,255,.04); border:1px solid var(--line);
+  color:var(--text); text-decoration:none; font-size:.97rem; font-weight:600;
+  transition:background .2s, border-color .2s, transform .2s, color .2s;
+  width:100%; justify-content:center;
+}
+.loc-telefon-btn:hover { background:rgba(204,59,30,.12); border-color:rgba(204,59,30,.3); color:#fff; transform:translateY(-1px); }
+
+/* Orar mini */
+.loc-orar-wrap   { flex: 1; }
+.loc-orar-label {
+  font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--faint); margin-bottom:10px;
+  display:flex; align-items:center; gap:7px;
+}
+.loc-orar-label::after { content:''; flex:1; height:1px; background:var(--line); }
+.orar-mini { display:flex; flex-direction:column; gap:4px; }
+.orar-mini-row { display:flex; justify-content:space-between; align-items:center; font-size:.88rem; padding:3px 0; }
+.orar-mini-row.today-row { background:rgba(216,165,62,.07); padding:5px 8px; border-radius:8px; margin:0 -8px; }
+.orar-mini-zi { color:var(--muted); font-weight:500; display:flex; align-items:center; gap:5px; }
+.orar-mini-row.today-row .orar-mini-zi { color:var(--gold); font-weight:700; }
+.orar-mini-interval { color:var(--text); font-weight:600; font-size:.86rem; }
+.orar-mini-row.today-row .orar-mini-interval { color:var(--gold); }
+.orar-azi-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+
+/* Maps button */
+.loc-maps-btn {
+  display:flex; align-items:center; justify-content:center; gap:9px;
+  margin-top:16px; padding:13px 20px; border-radius:14px;
+  background:linear-gradient(160deg,rgba(204,59,30,.18),rgba(168,45,20,.1));
+  border:1px solid rgba(204,59,30,.22);
+  color:var(--text); text-decoration:none;
+  font-size:.93rem; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+  transition:background .22s, border-color .22s, transform .22s;
+}
+.loc-maps-btn:hover { background:linear-gradient(160deg,rgba(204,59,30,.3),rgba(168,45,20,.2)); border-color:rgba(204,59,30,.45); transform:translateY(-2px); }
+.maps-emoji { font-size:1.1rem; }
+
+/* Info bar */
+.info-bar-loc { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:28px 32px; border-radius:22px; background:rgba(255,255,255,.025); border:1px solid var(--lineg); }
+.info-bar-item { display:flex; align-items:flex-start; gap:14px; }
+.info-bar-emoji { font-size:1.6rem; flex-shrink:0; margin-top:2px; }
+.info-bar-item strong { display:block; font-size:.97rem; margin-bottom:4px; }
+.info-bar-item p { color:var(--muted); font-size:.88rem; line-height:1.65; }
+
+/* Responsive */
+@media (max-width:860px) {
+  .locatii-grid { grid-template-columns:1fr; max-width:520px; margin-left:auto; margin-right:auto; }
+  .info-bar-loc { grid-template-columns:1fr; }
+  .page-wrap { padding:100px 22px 60px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Toskana">
+        <circle cx="60" cy="60" r="56" fill="white" stroke="#cc3b1e" stroke-width="7"/>
+        <circle cx="60" cy="60" r="42" fill="none" stroke="#cc3b1e" stroke-width="2" opacity=".2"/>
+        <defs>
+          <path id="bTA" d="M 20 60 A 40 40 0 0 1 100 60"/>
+          <path id="bBA" d="M 20 60 A 40 40 0 0 0 100 60"/>
+        </defs>
+        <text x="60" y="79" text-anchor="middle" font-size="66" font-weight="900" font-family="Arial Black,Arial" fill="#cc3b1e">T</text>
+        <text font-size="9.5" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.4" fill="#cc3b1e">
+          <textPath href="#bTA" startOffset="10%">PIZZERIE TOSKANA</textPath>
+        </text>
+        <text font-size="8.8" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.1" fill="#cc3b1e">
+          <textPath href="#bBA" startOffset="25%">RESTAURANT</textPath>
+        </text>
+      </svg>
+      <div class="brand-text">
+        <strong>Pizzeria Toskana</strong>
+        <small>Dal 2011 · Cluj-Napoca</small>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Acasă</a>
+      <a href="meniu.html">Meniu</a>
+      <a href="locatii.html" class="active">Locații</a>
+      <a href="despre.html">Despre noi</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a href="tel:+40742317282" class="nav-cta">Sună acum</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header" id="ph">
+    <div class="eyebrow">Unde ne găsești</div>
+    <div class="gold-line"></div>
+    <h2>3 locații în <span>Cluj-Napoca</span></h2>
+    <p>Suntem prezenți în Mărăști, Mănăștur și Hașdeu. Vino la noi sau sună pentru rezervări și comenzi la domiciliu.</p>
+  </div>
+
+  <div class="locatii-grid" id="locatii-grid">
+
+    <!-- LOCATIA 1: MARASTI -->
+    <div class="loc-card">
+      <div class="loc-card-header">
+        <span class="loc-num">01</span>
+        <span class="loc-icon">🍕</span>
+        <h3>Toskana Mărăști</h3>
+        <span class="loc-subtitle">Piața Mărăști · Centru</span>
+      </div>
+      <div class="loc-card-body">
+        <div class="loc-adresa">
+          <span class="loc-adresa-icon">📍</span>
+          <div class="loc-adresa-text">
+            <strong>Bd. 21 Decembrie Nr. 131–135</strong>
+            <span>Piața Mărăști, Cluj-Napoca</span>
+          </div>
+        </div>
+        <div class="loc-telefon-wrap">
+          <span class="loc-telefon-label">Rezervări</span>
+          <a href="tel:+40747268215" class="loc-telefon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.4 2 2 0 0 1 3.58 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.76a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/></svg>
+            0747.268.215
+          </a>
+        </div>
+        <div class="loc-orar-wrap">
+          <span class="loc-orar-label">Program</span>
+          <div class="orar-mini">
+            <div class="orar-mini-row" data-zi="luni"><span class="orar-mini-zi">Luni</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="marti"><span class="orar-mini-zi">Marți</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="miercuri"><span class="orar-mini-zi">Miercuri</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="joi"><span class="orar-mini-zi">Joi</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="vineri"><span class="orar-mini-zi">Vineri</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="sambata"><span class="orar-mini-zi">Sâmbătă</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="duminica"><span class="orar-mini-zi">Duminică</span><span class="orar-mini-interval">09:00 – 24:00</span></div>
+          </div>
+        </div>
+        <a href="LINK_MAPS_MARASTI" target="_blank" rel="noopener noreferrer" class="loc-maps-btn">
+          <span class="maps-emoji">🗺️</span> Deschide în Google Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- LOCATIA 2: MANASTUR -->
+    <div class="loc-card">
+      <div class="loc-card-header">
+        <span class="loc-num">02</span>
+        <span class="loc-icon">🌿</span>
+        <h3>Toskana Mănăștur</h3>
+        <span class="loc-subtitle">Complex Union · Str. Izlazului</span>
+      </div>
+      <div class="loc-card-body">
+        <div class="loc-adresa">
+          <span class="loc-adresa-icon">📍</span>
+          <div class="loc-adresa-text">
+            <strong>Str. Izlazului Nr. 15</strong>
+            <span>Mănăștur, Cluj-Napoca</span>
+          </div>
+        </div>
+        <div class="loc-telefon-wrap">
+          <span class="loc-telefon-label">Rezervări</span>
+          <a href="tel:+40747651420" class="loc-telefon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.4 2 2 0 0 1 3.58 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.76a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/></svg>
+            0747.651.420
+          </a>
+        </div>
+        <div class="loc-orar-wrap">
+          <span class="loc-orar-label">Program</span>
+          <div class="orar-mini">
+            <div class="orar-mini-row" data-zi="luni"><span class="orar-mini-zi">Luni</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="marti"><span class="orar-mini-zi">Marți</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="miercuri"><span class="orar-mini-zi">Miercuri</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="joi"><span class="orar-mini-zi">Joi</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="vineri"><span class="orar-mini-zi">Vineri</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="sambata"><span class="orar-mini-zi">Sâmbătă</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="duminica"><span class="orar-mini-zi">Duminică</span><span class="orar-mini-interval">09:00 – 24:00</span></div>
+          </div>
+        </div>
+        <a href="LINK_MAPS_MANASTUR" target="_blank" rel="noopener noreferrer" class="loc-maps-btn">
+          <span class="maps-emoji">🗺️</span> Deschide în Google Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- LOCATIA 3: HASDEU -->
+    <div class="loc-card">
+      <div class="loc-card-header">
+        <span class="loc-num">03</span>
+        <span class="loc-icon">🏛️</span>
+        <h3>Toskana Hașdeu</h3>
+        <span class="loc-subtitle">Str. Hașdeu · Comenzi &amp; Rezervări</span>
+      </div>
+      <div class="loc-card-body">
+        <div class="loc-adresa">
+          <span class="loc-adresa-icon">📍</span>
+          <div class="loc-adresa-text">
+            <strong>Str. Hașdeu Nr. 1</strong>
+            <span>Cluj-Napoca</span>
+          </div>
+        </div>
+        <div class="loc-telefon-wrap">
+          <span class="loc-telefon-label">Comenzi domiciliu &amp; Rezervări</span>
+          <a href="tel:+40742317282" class="loc-telefon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.4 2 2 0 0 1 3.58 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.76a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/></svg>
+            0742.317.282
+          </a>
+        </div>
+        <div class="loc-orar-wrap">
+          <span class="loc-orar-label">Program</span>
+          <div class="orar-mini">
+            <div class="orar-mini-row" data-zi="luni"><span class="orar-mini-zi">Luni</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="marti"><span class="orar-mini-zi">Marți</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="miercuri"><span class="orar-mini-zi">Miercuri</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="joi"><span class="orar-mini-zi">Joi</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="vineri"><span class="orar-mini-zi">Vineri</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="sambata"><span class="orar-mini-zi">Sâmbătă</span><span class="orar-mini-interval">08:00 – 24:00</span></div>
+            <div class="orar-mini-row" data-zi="duminica"><span class="orar-mini-zi">Duminică</span><span class="orar-mini-interval">09:00 – 24:00</span></div>
+          </div>
+        </div>
+        <a href="LINK_MAPS_HASDEU" target="_blank" rel="noopener noreferrer" class="loc-maps-btn">
+          <span class="maps-emoji">🗺️</span> Deschide în Google Maps
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INFO BAR -->
+  <div class="info-bar-loc" id="info-bar">
+    <div class="info-bar-item">
+      <span class="info-bar-emoji">🚗</span>
+      <div>
+        <strong>Livrare la domiciliu</strong>
+        <p>Comandă prin telefon sau online. Livrăm rapid în Cluj-Napoca și împrejurimi.</p>
+      </div>
+    </div>
+    <div class="info-bar-item">
+      <span class="info-bar-emoji">📅</span>
+      <div>
+        <strong>Rezervări la masă</strong>
+        <p>Sună la numărul locației dorite pentru a rezerva masa cu anticipație.</p>
+      </div>
+    </div>
+    <div class="info-bar-item">
+      <span class="info-bar-emoji">🕐</span>
+      <div>
+        <strong>Program extins zilnic</strong>
+        <p>Luni–Sâmbătă 08:00–24:00 · Duminică 09:00–24:00 la toate locațiile.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 Pizzeria Toskana Cluj-Napoca</p>
+  <div class="footer-links">
+    <a href="index.html">Acasă</a>
+    <a href="meniu.html">Meniu</a>
+    <a href="locatii.html">Locații</a>
+    <a href="despre.html">Despre noi</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</footer>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  const numeZile = ['duminica','luni','marti','miercuri','joi','vineri','sambata'];
+  const ziAzi = numeZile[new Date().getDay()];
+
+  document.querySelectorAll('.orar-mini').forEach(function(orar) {
+    orar.querySelectorAll('.orar-mini-row').forEach(function(row) {
+      if (row.dataset.zi === ziAzi) {
+        row.classList.add('today-row');
+        const dot = document.createElement('span');
+        dot.className = 'orar-azi-dot';
+        row.querySelector('.orar-mini-zi').prepend(dot);
+      }
+    });
+  });
+
+  gsap.from('#ph > *', { y:20, opacity:0, stagger:0.1, duration:0.7, ease:'power3.out', delay:0.15 });
+  gsap.from('.loc-card', { y:36, opacity:0, stagger:0.12, duration:0.75, ease:'power2.out', delay:0.3 });
+  gsap.from('#info-bar', { y:24, opacity:0, duration:0.7, ease:'power2.out',
+    scrollTrigger:{ trigger:'#info-bar', start:'top 88%' } });
+</script>
+</body>
+</html>

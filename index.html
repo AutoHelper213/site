@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acasă — Pizzeria Toskana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Toskana">
+        <circle cx="60" cy="60" r="56" fill="white" stroke="#cc3b1e" stroke-width="7"/>
+        <circle cx="60" cy="60" r="42" fill="none" stroke="#cc3b1e" stroke-width="2" opacity=".2"/>
+        <defs>
+          <path id="bTA" d="M 20 60 A 40 40 0 0 1 100 60"/>
+          <path id="bBA" d="M 20 60 A 40 40 0 0 0 100 60"/>
+        </defs>
+        <text x="60" y="79" text-anchor="middle" font-size="66" font-weight="900" font-family="Arial Black,Arial" fill="#cc3b1e">T</text>
+        <text font-size="9.5" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.4" fill="#cc3b1e">
+          <textPath href="#bTA" startOffset="10%">PIZZERIE TOSKANA</textPath>
+        </text>
+        <text font-size="8.8" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.1" fill="#cc3b1e">
+          <textPath href="#bBA" startOffset="25%">RESTAURANT</textPath>
+        </text>
+      </svg>
+      <div class="brand-text">
+        <strong>Pizzeria Toskana</strong>
+        <small>Dal 2011 · Cluj-Napoca</small>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Acasă</a>
+      <a href="meniu.html">Meniu</a>
+      <a href="locatii.html">Locații</a>
+      <a href="despre.html">Despre noi</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a href="tel:+40264000000" class="nav-cta">Sună acum</a>
+  </div>
+</nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">Pizza artizanală din 2011</div>
+      <h1>
+        <span class="break">O felie de</span>
+        <em>Italia</em>
+        <span class="break">în Cluj</span>
+      </h1>
+      <p class="hero-lead">Facem pizza cu ingrediente aduse cu grijă, aluat crescut lent și rețete perfecționate în 15 de ani.</p>
+      <div class="hero-actions">
+        <a href="comanda.html" class="btn btn-primary">Comandă acum</a>
+        <a href="meniu.html" class="btn btn-ghost">Vezi meniul</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n">15</div><div class="l">Ani experiență</div></div>
+        <div class="stat-div"></div>
+        <div class="stat"><div class="n">3</div><div class="l">Locații Cluj</div></div>
+        <div class="stat-div"></div>
+        <div class="stat"><div class="n">4.0</div><div class="l">Rating Google</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="box-stage">
+        <div class="scene-glow"></div>
+        <div class="box-shadow-floor"></div>
+        <div class="pill-badge pill-1">🍅 Ingrediente proaspete</div>
+        <div class="pill-badge pill-2">⭐ 4.0 · 8k+ recenzii</div>
+        <div class="pizza-box-wrap">
+          <img src="image.jpg" alt="Cutie pizza Toskana" width="768" height="768" class="pizza-box-image" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+  <p>© 2026 Pizzeria Toskana Cluj-Napoca</p>
+  <div class="footer-links">
+    <a href="index.html">Acasă</a>
+    <a href="meniu.html">Meniu</a>
+    <a href="locatii.html">Locații</a>
+    <a href="despre.html">Despre noi</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</footer>
+
+  <script>
+    const intro = gsap.timeline({ delay: 0.2 });
+    intro
+      .from('.hero-left > *', { y: 22, opacity: 0, stagger: 0.1, duration: 0.72, ease: 'power3.out' })
+      .from('.pizza-box-wrap', { y: 30, opacity: 0, duration: 0.95, ease: 'back.out(1.14)' }, '-=0.45')
+      .from('.pill-badge', { y: 14, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'power2.out' }, '-=0.35');
+    gsap.to('.pizza-box-wrap', { y: -10, rotateZ: -1.2, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    gsap.to('.box-shadow-floor', { scaleX: 0.94, opacity: 0.78, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    gsap.to('.pizza-box-image', { rotateY: -5.5, rotateX: 8.5, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
+  </script>
+</body>
+</html>
