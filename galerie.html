@@ -373,6 +373,26 @@
   loadGalerie(DEFAULT_ID);
 })();
 </script>
+  <script>
+    (function () {
+      var burger = document.getElementById('hamburger');
+      var navLinks = document.querySelector('.nav-links');
+
+      if (burger && navLinks) {
+        burger.addEventListener('click', function () {
+          burger.classList.toggle('open');
+          navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            burger.classList.remove('open');
+            navLinks.classList.remove('open');
+          });
+        });
+      }
+    })();
+  </script>
 
 </body>
 </html>

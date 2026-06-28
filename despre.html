@@ -335,6 +335,26 @@
   gsap.from('.orar-section', { y: 20, opacity: 0, duration: 0.65, ease: 'power2.out', delay: 0.5 });
   gsap.from('.despre-cta', { y: 20, opacity: 0, duration: 0.65, ease: 'power2.out', delay: 0.55 });
 </script>
+<script>
+    (function () {
+      var burger = document.getElementById('hamburger');
+      var navLinks = document.querySelector('.nav-links');
+
+      if (burger && navLinks) {
+        burger.addEventListener('click', function () {
+          burger.classList.toggle('open');
+          navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            burger.classList.remove('open');
+            navLinks.classList.remove('open');
+          });
+        });
+      }
+    })();
+  </script>
 
 </body>
 </html>
