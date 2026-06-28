@@ -35,19 +35,26 @@
       </div>
     </a>
     <div class="nav-links">
-      <a href="index.html">Acasă</a>
+      <a href="index.html" class="active">Acasă</a>
       <a href="meniu.html">Meniu</a>
       <a href="locatii.html">Locații</a>
       <a href="despre.html">Despre noi</a>
+      <a href="galerie.html">Galerie</a>
       <a href="contact.html">Contact</a>
     </div>
     <a href="tel:+40264000000" class="nav-cta">Sună acum</a>
+    <button class="hamburger" id="hamburger" aria-label="Deschide meniu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </nav>
 
   <section class="hero">
     <div class="hero-left">
       <div class="eyebrow">Pizza artizanală din 2011</div>
+      <div class="gold-line"></div> 
       <h1>
         <span class="break">O felie de</span>
         <em>Italia</em>
@@ -79,13 +86,17 @@
     </div>
   </section>
 
-  <footer>
-  <p>© 2026 Pizzeria Toskana Cluj-Napoca</p>
+<footer>
+  <div class="footer-left">
+    <p>© 2026 Pizzeria Toskana Cluj-Napoca</p>
+    <p style="color:var(--faint);font-size:12px">Design & dezvoltare web de <span style="color:var(--gold)">Alex Tămășan</span></p>
+  </div>
   <div class="footer-links">
     <a href="index.html">Acasă</a>
     <a href="meniu.html">Meniu</a>
     <a href="locatii.html">Locații</a>
     <a href="despre.html">Despre noi</a>
+    <a href="galerie.html">Galerie</a>
     <a href="contact.html">Contact</a>
   </div>
 </footer>
@@ -99,6 +110,33 @@
     gsap.to('.pizza-box-wrap', { y: -10, rotateZ: -1.2, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
     gsap.to('.box-shadow-floor', { scaleX: 0.94, opacity: 0.78, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
     gsap.to('.pizza-box-image', { rotateY: -5.5, rotateX: 8.5, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    const burger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (burger) {
+      burger.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+    }
+  </script>
+  <script>
+    (function () {
+      var burger = document.getElementById('hamburger');
+      var navLinks = document.querySelector('.nav-links');
+
+      if (burger && navLinks) {
+        burger.addEventListener('click', function () {
+          burger.classList.toggle('open');
+          navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            burger.classList.remove('open');
+            navLinks.classList.remove('open');
+          });
+        });
+      }
+    })();
   </script>
 </body>
 </html>

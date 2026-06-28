@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galerie & Informații — Pizzeria Toskana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+<style>
+.page-wrap { max-width: 1240px; margin: 0 auto; padding: 120px 48px 80px; }
+.page-header { text-align: center; margin-bottom: 52px; }
+.page-header h2 { font-family: var(--font-d); font-size: clamp(2rem,4vw,3.8rem); font-weight: 900; line-height: 1.05; margin-bottom: 14px; letter-spacing: -.02em; }
+.page-header h2 span { color: var(--gold); }
+.page-header p { color: var(--muted); max-width: 58ch; margin: 0 auto; line-height: 1.78; font-size: 1.05rem; }
+.gold-line { width: 52px; height: 2px; margin: 16px auto 20px; background: linear-gradient(90deg,transparent,var(--gold),transparent); }
+
+.sec-div { display: flex; align-items: center; gap: 16px; margin: 52px 0 28px; }
+.sec-div span { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+.sec-div::before, .sec-div::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg,transparent,rgba(216,165,62,.18),transparent); }
+
+.galerie-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+.conn-badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+.conn-dot { width: 8px; height: 8px; border-radius: 50%; background: #888; flex-shrink:0; }
+.conn-dot.ok { background: #3aaa5c; }
+.conn-dot.err { background: var(--red); }
+.conn-dot.loading { background: var(--gold); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+.foto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 16px; }
+.foto-card { border-radius: 18px; overflow: hidden; background: rgba(255,255,255,.025); border: 1px solid var(--line); transition: border-color .22s, transform .22s; cursor: pointer; }
+.foto-card:hover { border-color: rgba(216,165,62,.3); transform: translateY(-3px); }
+.foto-card img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.foto-placeholder { width: 100%; height: 220px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; background: rgba(255,255,255,.03); }
+
+.skeleton { background: linear-gradient(90deg,rgba(255,255,255,.05) 25%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.05) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 18px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+.skel-foto { height: 220px; }
+
+.empty-state { text-align:center; padding:60px 20px; color:var(--faint); }
+.empty-state .empty-icon { font-size:3rem; margin-bottom:12px; }
+.empty-state p { font-size:.95rem; line-height:1.8; }
+
+.comunicat-wrap { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: start; background: rgba(255,255,255,.025); border: 1px solid var(--line); border-radius: 28px; overflow: hidden; padding: 40px; }
+.comunicat-img { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); }
+.comunicat-img img { width: 100%; height: auto; display: block; }
+.comunicat-body h3 { font-family: var(--font-d); font-size: 1.6rem; font-weight: 900; line-height: 1.1; margin-bottom: 10px; }
+.com-date { color: var(--red); font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; display: block; }
+.comunicat-body p { color: var(--muted); line-height: 1.82; font-size: .96rem; margin-bottom: 12px; }
+.com-info { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-top: 18px; }
+.com-info p { margin-bottom: 4px; font-size: .9rem; }
+.com-info strong { color: var(--text); }
+
+.pdf-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.pdf-card { padding: 28px 24px; border-radius: 22px; background: rgba(255,255,255,.025); border: 1px solid var(--line); transition: border-color .22s, transform .22s; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; }
+.pdf-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,transparent,var(--red),transparent); opacity: 0; transition: opacity .3s; }
+.pdf-card:hover { border-color: rgba(204,59,30,.28); transform: translateY(-4px); }
+.pdf-card:hover::after { opacity: 1; }
+.pdf-icon { font-size: 2.4rem; }
+.pdf-card h4 { font-family: var(--font-d); font-size: 1.1rem; font-weight: 700; line-height: 1.3; }
+.pdf-card p { color: var(--muted); font-size: .88rem; line-height: 1.7; flex: 1; }
+.pdf-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; background: rgba(204,59,30,.12); color: var(--red); border: 1px solid rgba(204,59,30,.22); transition: all .2s; }
+.pdf-btn:hover { background: var(--red); color: #fff; }
+
+.lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:999; align-items:center; justify-content:center; }
+.lightbox.open { display:flex; }
+.lightbox img { max-width:82vw; max-height:88vh; border-radius:12px; object-fit:contain; }
+.lightbox-close { position:absolute; top:20px; right:28px; font-size:2rem; color:#fff; cursor:pointer; background:none; border:none; line-height:1; }
+.lb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-b);
+  letter-spacing: .06em;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  user-select: none;
+}
+.lb-arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255,255,255,.3);
+  transform: translateY(-50%) scale(1.05);
+}
+.lb-prev { left: 20px; }
+.lb-next { right: 20px; }
+
+@media (max-width: 980px) {
+  .page-wrap { padding: 100px 22px 60px; }
+  .comunicat-wrap { grid-template-columns: 1fr; }
+  .pdf-grid { grid-template-columns: 1fr 1fr; }
+  .lb-prev { left: 10px; }
+  .lb-next { right: 10px; }
+}
+@media (max-width: 600px) {
+  .pdf-grid { grid-template-columns: 1fr; }
+  .lightbox img { max-width: 95vw; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Toskana">
+        <circle cx="60" cy="60" r="56" fill="white" stroke="#cc3b1e" stroke-width="7"/>
+        <circle cx="60" cy="60" r="42" fill="none" stroke="#cc3b1e" stroke-width="2" opacity=".2"/>
+        <defs>
+          <path id="bTA" d="M 20 60 A 40 40 0 0 1 100 60"/>
+          <path id="bBA" d="M 20 60 A 40 40 0 0 0 100 60"/>
+        </defs>
+        <text x="60" y="79" text-anchor="middle" font-size="66" font-weight="900" font-family="Arial Black,Arial" fill="#cc3b1e">T</text>
+        <text font-size="9.5" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.4" fill="#cc3b1e">
+          <textPath href="#bTA" startOffset="10%">PIZZERIE TOSKANA</textPath>
+        </text>
+        <text font-size="8.8" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.1" fill="#cc3b1e">
+          <textPath href="#bBA" startOffset="25%">RESTAURANT</textPath>
+        </text>
+      </svg>
+      <div class="brand-text">
+        <strong>Pizzeria Toskana</strong>
+        <small>Dal 2011 · Cluj-Napoca</small>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Acasă</a>
+      <a href="meniu.html">Meniu</a>
+      <a href="locatii.html">Locații</a>
+      <a href="despre.html">Despre noi</a>
+      <a href="galerie.html" class="active">Galerie</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a href="tel:+40264000000" class="nav-cta">Sună acum</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="eyebrow">Poze & Documente</div>
+    <div class="gold-line"></div>
+    <h2>Galerie <span>&</span> Informații</h2>
+    <p>Fotografii din restaurantele noastre, comunicate de presă și documente oficiale.</p>
+  </div>
+
+  <div class="sec-div"><span>Galerie foto</span></div>
+
+  <div class="galerie-top">
+    <div>
+      <h3 style="font-family:var(--font-d);font-size:1.5rem;font-weight:900;margin-bottom:4px">
+        Fotografii din <span style="color:var(--gold)">restaurante</span>
+      </h3>
+    </div>
+    <div class="conn-badge">
+      <span class="conn-dot loading" id="connDot"></span>
+      <span id="connLabel">Se conectează...</span>
+    </div>
+  </div>
+
+  <div id="galerieWrap">
+    <div class="foto-grid">
+      <div class="skel-foto skeleton"></div>
+      <div class="skel-foto skeleton"></div>
+      <div class="skel-foto skeleton"></div>
+      <div class="skel-foto skeleton"></div>
+      <div class="skel-foto skeleton"></div>
+      <div class="skel-foto skeleton"></div>
+    </div>
+  </div>
+
+  <div class="sec-div" style="margin-top:64px"><span>Comunicat de presă</span></div>
+  <div class="comunicat-wrap" id="comunicat">
+    <div class="comunicat-img">
+      <img src="comunicat.jpg" alt="Comunicat de presă Pizzeria Toskana" />
+    </div>
+    <div class="comunicat-body">
+      <span class="com-date">11 Iunie 2021</span>
+      <h3>Granturi pentru capital de lucru acordate IMM-urilor</h3>
+      <p>Societatea <strong>CRIDENS TOP SRL</strong>, în calitate de Beneficiar, a implementat proiectul „Granturi pentru capital de lucru", cod proiect 617, finanțat prin schema de ajutor de stat instituită prin <strong>ORDONANȚA DE URGENȚĂ nr. 130 din 31 iulie 2020</strong>.</p>
+      <p>Proiect aferent Programului operațional Competitivitate 2014-2020, în contextul crizei provocate de COVID-19. Valoarea totală: <strong>834.813,75 lei</strong>, din care finanțarea nerambursabilă: <strong>725.925 lei</strong>.</p>
+      <p>Durata de implementare: 180 zile, în perioada 12/23/2020 – 6/21/2021.</p>
+      <div class="com-info">
+        <p><strong>Beneficiar:</strong> CRIDENS TOP SRL</p>
+        <p><strong>Adresă:</strong> Str. Bucegi nr. 13-15, Ap. 1, Cluj-Napoca</p>
+        <p><strong>Reprezentant legal:</strong> Crișan Dorina</p>
+        <p><strong>Tel:</strong> 0746 022 051 &nbsp;|&nbsp; <strong>Email:</strong> pizzeriatoskana@yahoo.com</p>
+        <p style="margin-top:8px;font-size:.82rem;color:var(--faint)">Proiect cofinanțat din Fondul European de Dezvoltare Regională prin POR 2014-2020.</p>
+      </div>
+      <a href="http://www.pizzeriatoskana.ro/comunicat-de-presa-granturi-pentru-capital-de-lucru-acordate-imm-urilor-iunie-3/"
+         target="_blank" class="btn btn-primary" style="display:inline-flex;margin-top:22px">
+        Vezi comunicatul complet →
+      </a>
+    </div>
+  </div>
+
+  <div class="sec-div" style="margin-top:64px"><span>Documente oficiale</span></div>
+  <div class="pdf-grid">
+    <div class="pdf-card">
+      <div class="pdf-icon">📄</div>
+      <h4>Plan diminuare risipă — CRIDENS TOP</h4>
+      <p>Plan anual de diminuare a risipei alimentare pentru societatea CRIDENS TOP SRL.</p>
+      <a href="https://www.pizzeriatoskana.ro/wp-content/uploads/2026/03/Plan-anual-de-diminuare-a-risipei-alimentare-CRIDENS-TOP.pdf" target="_blank" class="pdf-btn">⬇ Descarcă PDF</a>
+    </div>
+    <div class="pdf-card">
+      <div class="pdf-icon">📄</div>
+      <h4>Plan diminuare risipă — SINED TOP</h4>
+      <p>Plan anual de diminuare a risipei alimentare pentru societatea SINED TOP SRL.</p>
+      <a href="https://www.pizzeriatoskana.ro/wp-content/uploads/2026/03/Plan-anual-de-diminuare-a-risipei-alimentare-SINED-TOP.pdf" target="_blank" class="pdf-btn">⬇ Descarcă PDF</a>
+    </div>
+    <div class="pdf-card">
+      <div class="pdf-icon">📄</div>
+      <h4>Plan diminuare risipă — TOSKANA CRIS</h4>
+      <p>Plan anual de diminuare a risipei alimentare pentru societatea TOSKANA CRIS SRL.</p>
+      <a href="https://www.pizzeriatoskana.ro/wp-content/uploads/2026/03/Plan-anual-de-diminuare-a-risipei-alimentare-TOSKANA-CRIS.pdf" target="_blank" class="pdf-btn">⬇ Descarcă PDF</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">✕</button>
+  <button class="lb-arrow lb-prev" id="lbPrev">&#8592; Prev</button>
+  <img src="" id="lbImg" alt="" />
+<button class="lb-arrow lb-next" id="lbNext">Next &#8594;</button>
+</div>
+
+<footer>
+  <div class="footer-left">
+    <p>© 2026 Pizzeria Toskana Cluj-Napoca</p>
+    <p style="color:var(--faint);font-size:12px">Design & dezvoltare web de <span style="color:var(--gold)">Alex Tămășan</span></p>
+  </div>
+  <div class="footer-links">
+    <a href="index.html">Acasă</a>
+    <a href="meniu.html">Meniu</a>
+    <a href="locatii.html">Locații</a>
+    <a href="despre.html">Despre noi</a>
+    <a href="galerie.html">Galerie</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const DEFAULT_ID = '1A9dCQsADY9tZXD2nZ0AD6j1Rybx8EE9mVd2vG-Sv4pI';
+  const $ = id => document.getElementById(id);
+
+  let currentIndex = 0;
+  let pozeSrc = [];
+
+  function setConn(state, text) {
+    $('connDot').className = 'conn-dot ' + state;
+    $('connLabel').textContent = text;
+  }
+
+  function driveUrl(url) {
+    if (!url) return '';
+    const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return m ? `https://drive.google.com/uc?export=view&id=${m[1]}` : url;
+  }
+
+  function renderEmpty() {
+    $('galerieWrap').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📷</div>
+        <p>Nicio poză adăugată încă.</p>
+      </div>`;
+  }
+
+  async function loadGalerie(sheetId) {
+    setConn('loading', 'Se încarcă...');
+    $('galerieWrap').innerHTML = '<div class="foto-grid">' + Array(6).fill('<div class="skel-foto skeleton"></div>').join('') + '</div>';
+    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Galerie`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+      const rows = json.table.rows;
+      const poze = [];
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const g = j => (row.c[j] && row.c[j].v != null) ? String(row.c[j].v).trim() : '';
+        const poza = g(0);
+        if (!poza) continue;
+        poze.push({ poza });
+      }
+      setConn('ok', `${poze.length} poze încărcate`);
+      renderGalerie(poze);
+    } catch (e) {
+      setConn('err', 'Eroare — verifică Sheet-ul');
+      renderEmpty();
+    }
+  }
+
+  function renderGalerie(poze) {
+    if (!poze.length) { renderEmpty(); return; }
+    pozeSrc = poze.map(p => driveUrl(p.poza)).filter(Boolean);
+    let html = '<div class="foto-grid">';
+    for (let i = 0; i < poze.length; i++) {
+      const src = driveUrl(poze[i].poza);
+      html += `<div class="foto-card" data-index="${i}">
+        ${src ? `<img src="${src}" alt="Foto Toskana" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
+        <div class="foto-placeholder"${src ? ' style="display:none"' : ''}>📷</div>
+      </div>`;
+    }
+    html += '</div>';
+    $('galerieWrap').innerHTML = html;
+
+    document.querySelectorAll('.foto-card').forEach(c => {
+      c.addEventListener('click', () => openLightbox(parseInt(c.dataset.index)));
+    });
+
+    gsap.from('.foto-card', { y: 24, opacity: 0, stagger: 0.08, duration: 0.55, ease: 'power2.out',delay: 0.8, clearProps: 'all' });
+  }
+
+  function openLightbox(index) {
+    currentIndex = index;
+    $('lbImg').src = pozeSrc[currentIndex];
+    $('lightbox').classList.add('open');
+  }
+
+  $('lbPrev').addEventListener('click', e => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + pozeSrc.length) % pozeSrc.length;
+    $('lbImg').src = pozeSrc[currentIndex];
+  });
+
+  $('lbNext').addEventListener('click', e => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % pozeSrc.length;
+    $('lbImg').src = pozeSrc[currentIndex];
+  });
+
+  $('lightbox').addEventListener('click', e => {
+    if (e.target === $('lightbox') || e.target === $('lbClose')) {
+      $('lightbox').classList.remove('open');
+      $('lbImg').src = '';
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!$('lightbox').classList.contains('open')) return;
+    if (e.key === 'ArrowRight') $('lbNext').click();
+    if (e.key === 'ArrowLeft')  $('lbPrev').click();
+    if (e.key === 'Escape')     { $('lightbox').classList.remove('open'); $('lbImg').src = ''; }
+  });
+
+  gsap.from('.page-header > *', { y: 18, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power3.out', delay: 0.6, clearProps: 'all' });
+  gsap.from('.galerie-top',     { y: 20, opacity: 0, duration: 0.6,  ease: 'power2.out', delay: 0.8,  clearProps: 'all' });
+  gsap.from('#comunicat',       { y: 24, opacity: 0, duration: 0.7,  ease: 'power2.out', delay: 1,  clearProps: 'all' });
+  gsap.from('.pdf-card',        { y: 24, opacity: 0, stagger: 0.1,   duration: 0.6, ease: 'power2.out', delay: 1.2, clearProps: 'all' });
+
+  loadGalerie(DEFAULT_ID);
+})();
+</script>
+
+</body>
+</html>

@@ -31,7 +31,7 @@
         </svg>
         <div class="brand-text">
           <strong>Pizzeria Toskana</strong>
-          <small>Dal 1994 · Cluj-Napoca</small>
+          <small>Dal 2011 · Cluj-Napoca</small>
         </div>
       </a>
       <div class="nav-links">
@@ -39,9 +39,15 @@
         <a href="meniu.html">Meniu</a>
         <a href="locatii.html">Locații</a>
         <a href="despre.html">Despre noi</a>
+        <a href="galerie.html">Galerie</a>
         <a href="contact.html">Contact</a>
       </div>
       <a href="tel:+40264000000" class="nav-cta">Sună acum</a>
+      <button class="hamburger" id="hamburger" aria-label="Deschide meniu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </nav>
 
@@ -75,12 +81,16 @@
   </div>
 
   <footer>
-    <p>© 2026 Pizzeria Toskana Cluj-Napoca</p>
+    <div class="footer-left">
+      <p>© 2026 Pizzeria Toskana Cluj-Napoca</p>
+      <p style="color:var(--faint);font-size:12px">Design & dezvoltare web de <span style="color:var(--gold)">Alex Tămășan</span></p>
+    </div>
     <div class="footer-links">
       <a href="index.html">Acasă</a>
       <a href="meniu.html">Meniu</a>
       <a href="locatii.html">Locații</a>
       <a href="despre.html">Despre noi</a>
+      <a href="galerie.html">Galerie</a>
       <a href="contact.html">Contact</a>
     </div>
   </footer>
@@ -88,6 +98,26 @@
   <script>
     gsap.from('.page-header > *', { y: 18, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power3.out', delay: 0.15 });
     gsap.from('.ord-card', { y: 24, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out', delay: 0.3 });
+  </script>
+  <script>
+    (function () {
+      var burger = document.getElementById('hamburger');
+      var navLinks = document.querySelector('.nav-links');
+
+      if (burger && navLinks) {
+        burger.addEventListener('click', function () {
+          burger.classList.toggle('open');
+          navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            burger.classList.remove('open');
+            navLinks.classList.remove('open');
+          });
+        });
+      }
+    })();
   </script>
 </body>
 </html>
