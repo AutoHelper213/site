@@ -102,39 +102,36 @@
 </footer>
 
   <script>
-    const intro = gsap.timeline({ delay: 0.2 });
-    intro
-      .from('.hero-left > *', { y: 22, opacity: 0, stagger: 0.1, duration: 0.72, ease: 'power3.out' })
-      .from('.pizza-box-wrap', { y: 30, opacity: 0, duration: 0.95, ease: 'back.out(1.14)' }, '-=0.45')
-      .from('.pill-badge', { y: 14, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'power2.out' }, '-=0.35');
-    gsap.to('.pizza-box-wrap', { y: -10, rotateZ: -1.2, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
-    gsap.to('.box-shadow-floor', { scaleX: 0.94, opacity: 0.78, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
-    gsap.to('.pizza-box-image', { rotateY: -5.5, rotateX: 8.5, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
-    const burger = document.getElementById('hamburger');
-    const navLinks = document.querySelector('.nav-links');
-    if (burger) {
-      burger.addEventListener('click', () => {
+  // Animații GSAP
+  const intro = gsap.timeline({ delay: 0.2 });
+  intro
+    .from('.hero-left > *', { y: 22, opacity: 0, stagger: 0.1, duration: 0.72, ease: 'power3.out' })
+    .from('.pizza-box-wrap', { y: 30, opacity: 0, duration: 0.95, ease: 'back.out(1.14)' }, '-=0.45')
+    .from('.pill-badge', { y: 14, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'power2.out' }, '-=0.35');
+
+  gsap.to('.pizza-box-wrap', { y: -10, rotateZ: -1.2, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
+  gsap.to('.box-shadow-floor', { scaleX: 0.94, opacity: 0.78, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
+  gsap.to('.pizza-box-image', { rotateY: -5.5, rotateX: 8.5, duration: 3.1, ease: 'sine.inOut', repeat: -1, yoyo: true });
+
+  // Hamburger
+  (function () {
+    var burger = document.getElementById('hamburger');
+    var navLinks = document.querySelector('.nav-links');
+
+    if (burger && navLinks) {
+      burger.addEventListener('click', function () {
+        burger.classList.toggle('open');
         navLinks.classList.toggle('open');
       });
+
+      navLinks.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          burger.classList.remove('open');
+          navLinks.classList.remove('open');
+        });
+      });
     }
-    (function () {
-      var burger = document.getElementById('hamburger');
-      var navLinks = document.querySelector('.nav-links');
-
-      if (burger && navLinks) {
-        burger.addEventListener('click', function () {
-          burger.classList.toggle('open');
-          navLinks.classList.toggle('open');
-        });
-
-        navLinks.querySelectorAll('a').forEach(function (a) {
-          a.addEventListener('click', function () {
-            burger.classList.remove('open');
-            navLinks.classList.remove('open');
-          });
-        });
-      }
-    })();
-  </script>
+  })();
+</script>
 </body>
 </html>
