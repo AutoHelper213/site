@@ -337,8 +337,6 @@ footer p { color: var(--faint); font-size: 13.5px; }
   .hero-lead, .hero-actions, .hero-stats { justify-content: center; text-align: center; }
   .hero-right { min-height: auto; }
 
-  .pill-1, .pill-2 { display: none; }
-
   .page-wrap { padding: 96px 22px 60px; }
   .grid-3, .grid-2 { grid-template-columns: 1fr; }
   h1, .page-header h2 { font-size: clamp(2.35rem,9vw,3.9rem); }
